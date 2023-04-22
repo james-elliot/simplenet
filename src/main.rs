@@ -85,7 +85,7 @@ fn gradient_descent2() {
 fn gradient_descent3() {
     let vs = nn::VarStore::new(Device::Cpu);
     let my_module = net(&vs.root(), 2, 14, 1);
-    let mut opt = nn::Sgd::default().build(&vs, 1e-4).unwrap();
+    let mut opt = nn::Sgd::default().build(&vs, 1e-3).unwrap();
     let xs = Tensor::of_slice2(&[
 	[0.1_f32,0.1],
 	[0.1_f32,0.2]
@@ -93,16 +93,16 @@ fn gradient_descent3() {
     println!("xs:");
     xs.print();
     let ys = Tensor::of_slice2(&[
-	[0.1_f32],
-	[0.2_f32]
+	[0.01_f32],
+	[0.04_f32]
     ]);
     println!("ys:");
     ys.print();
-    for idx in 1..1000 {
+    for idx in 1..1000000 {
         // Dummy mini-batches made of zeros.
 	let res = my_module.forward(&xs);
         let loss = (&res - &ys).pow_tensor_scalar(2).sum(kind::Kind::Float);
-	if idx%100 == 99 {
+	if idx%10000 == 9999 {
 	    println!("ys:");
 	    ys.print();
 	    println!("Res:");
